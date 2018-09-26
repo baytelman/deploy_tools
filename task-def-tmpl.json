@@ -1,0 +1,38 @@
+{
+    "family": "$TASK_NAME",
+    "requiresCompatibilities": [
+        "EC2"
+    ],
+    "containerDefinitions": [
+        {
+            "name": "$REPO_NAME",
+            "image": "$AWS_ACCOUNT.dkr.ecr.us-east-1.amazonaws.com/$REPO_NAME:$SHA",
+            "cpu": 10,
+            "memory": 500,
+            "portMappings": [
+                {
+                    "containerPort": $REPO_PORT,
+                    "protocol": "tcp",
+                    "hostPort": 0
+                }
+            ],
+            "logConfiguration": {
+              "logDriver": "awslogs",
+              "options": {
+                "awslogs-group": "/ecs/$TASK_NAME",
+                "awslogs-region": "us-east-1",
+                "awslogs-stream-prefix": "ecs"
+              }
+            },
+            "essential": true,
+            "environment": [
+                $SECRETS
+                { "name":   "NODE_ENV"          , "value":    "production"    },
+                { "name":   "APP_NAME"          , "value":    "$APP_NAME"     },
+                { "name":   "APP_SHA"           , "value":    "$SHA"          },
+                { "name":   "REACT_APP_SHA"     , "value":    "$SHA"          },
+                { "name":   "CLUSTER_NAME"      , "value":    "$CLUSTER_NAME" }
+            ]
+        }
+    ]
+}
