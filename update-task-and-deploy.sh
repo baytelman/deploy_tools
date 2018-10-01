@@ -13,7 +13,7 @@ export SHA=$(git log --pretty=format:'%h' -n 1)
 export BRANCH=$(git branch | grep \* | cut -d ' ' -f2)
 export DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 export APP_NAME="$CLUSTER_NAME-$REPO_NAME"
-export TASK_NAME="$REPO_NAME-$ENV"
+export TASK_NAME="$REPO_NAME-$DEPLOY_ENV"
 
 if [ $NAMED_AWS_CLI ]
 then
@@ -24,7 +24,7 @@ fi
 
 printf "\n${BLUE}Creating task: ${PURPLE}$TASK_NAME:$SHA ${NC}\n"
 mkdir -p $DIR/tmp
-export SECRETS=$(cat $PWD/secrets.$ENV.jsonpart)
+export SECRETS=$(cat $PWD/secrets.$DEPLOY_ENV.jsonpart)
 cat $DIR/task-def-tmpl.json | envsubst > $DIR/tmp/task-def-$TASK_NAME.json
 export SECRETS=""
 
@@ -41,7 +41,7 @@ $CMD \
     | head -4
 
 printf "\n${BLUE}Tagging deployed commit in git and image in the repo: ${PURPLE}$TASK_NAME:$SHA ${NC}\n"
-docker push $AWS_ACCOUNT.dkr.ecr.us-east-1.amazonaws.com/$REPO_NAME:$ENV
+docker push $AWS_ACCOUNT.dkr.ecr.us-east-1.amazonaws.com/$REPO_NAME:$DEPLOY_ENV
 
 # Track this unique deploy
 git tag $CLUSTER_NAME-$SHA >/dev/null
