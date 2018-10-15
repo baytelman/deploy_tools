@@ -32,7 +32,7 @@ then
 			DEPLOYED=true
 			echo "\"${SHA}\" found in ${LIVE_URL}!"
 		else
-			echo "Waiting (${WAIT}s) for \"${SHA}\" in ${LIVE_URL}..."
+			echo "Waiting (${WAIT}s) for \"${SHA}\" in ${LIVE_URL} ..."
 			sleep $WAIT
 			WAIT=$((1 + $WAIT))
 		fi
