@@ -24,13 +24,13 @@ DEPLOYED=false
 WAIT=1
 if [ $LIVE_URL ]
 then
-	echo "Checking for \"${SHA}\" in ${LIVE_URL}:"
+	echo "Checking for \"${SHA}\" in ${LIVE_URL} :"
 	while [ ${DEPLOYED} != true ]
 	do
 		if curl -s -i  "$LIVE_URL" | grep "$SHA"
 		then
 			DEPLOYED=true
-			echo "\"${SHA}\" found in ${LIVE_URL}!"
+			echo "\"${SHA}\" found in ${LIVE_URL} !"
 		else
 			echo "Waiting (${WAIT}s) for \"${SHA}\" in ${LIVE_URL} ..."
 			sleep $WAIT
