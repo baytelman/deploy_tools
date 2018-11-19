@@ -8,7 +8,7 @@
             "name": "$REPO_NAME",
             "image": "$AWS_ACCOUNT.dkr.ecr.us-east-1.amazonaws.com/$REPO_NAME:$SHA",
             "cpu": 10,
-            "memory": 500,
+            "memory": 768,
             "portMappings": [
                 {
                     "containerPort": $REPO_PORT,
