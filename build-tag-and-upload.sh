@@ -1,5 +1,6 @@
 #!/bin/bash
 # Builds, tags, and uploads container image
+set -e
 
 BLUE='\033[1;34m'
 PURPLE='\033[1;35m'
@@ -14,7 +15,8 @@ else
   export NAMED_PROFILE_AWS=""
 fi
 
-if [[ "$(docker images -q $REPO_NAME:$SHA 2> /dev/null)" == "" ]];
+if [[ "$(docker images -q $REPO_NAME:$SHA 2> /dev/null)" == "" ]]
+then
   printf "\n${BLUE}Building image: ${PURPLE}$REPO_NAME:$SHA ${NC}\n"
   BUILD="docker build $DOCKER_ARGS -t $REPO_NAME ."
   echo $BUILD
@@ -24,7 +26,7 @@ else
   printf "\n${BLUE}Image already built: ${PURPLE}$REPO_NAME:$SHA ${NC}\n"
 fi
 
-printf "\n${BLUE}Tagging image: ${PURPLE}$REPO_NAME:$SHA ${NC}\"
+printf "\n${BLUE}Tagging image: ${PURPLE}$REPO_NAME:$SHA ${NC}\n"
 docker tag $REPO_NAME $AWS_ACCOUNT.dkr.ecr.us-east-1.amazonaws.com/$REPO_NAME:latest
 docker tag $REPO_NAME $AWS_ACCOUNT.dkr.ecr.us-east-1.amazonaws.com/$REPO_NAME:$DEPLOY_ENV
 docker tag $REPO_NAME $AWS_ACCOUNT.dkr.ecr.us-east-1.amazonaws.com/$REPO_NAME:$SHA
