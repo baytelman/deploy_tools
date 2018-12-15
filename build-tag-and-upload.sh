@@ -14,12 +14,17 @@ else
   export NAMED_PROFILE_AWS=""
 fi
 
-printf "\n${BLUE}Building image: ${PURPLE}$REPO_NAME:$SHA ${NC}\n"
-BUILD="docker build $DOCKER_ARGS -t $REPO_NAME ."
-echo $BUILD
-eval $BUILD
+if [[ "$(docker images -q $REPO_NAME:$SHA 2> /dev/null)" == "" ]];
+  printf "\n${BLUE}Building image: ${PURPLE}$REPO_NAME:$SHA ${NC}\n"
+  BUILD="docker build $DOCKER_ARGS -t $REPO_NAME ."
+  echo $BUILD
+  eval $BUILD
+  docker tag $REPO_NAME $REPO_NAME:$SHA
+else
+  printf "\n${BLUE}Image already built: ${PURPLE}$REPO_NAME:$SHA ${NC}\n"
+fi
 
-printf "\n${BLUE}Tagging image: ${PURPLE}$REPO_NAME:$SHA ${NC}\n"
+printf "\n${BLUE}Tagging image: ${PURPLE}$REPO_NAME:$SHA ${NC}\"
 docker tag $REPO_NAME $AWS_ACCOUNT.dkr.ecr.us-east-1.amazonaws.com/$REPO_NAME:latest
 docker tag $REPO_NAME $AWS_ACCOUNT.dkr.ecr.us-east-1.amazonaws.com/$REPO_NAME:$DEPLOY_ENV
 docker tag $REPO_NAME $AWS_ACCOUNT.dkr.ecr.us-east-1.amazonaws.com/$REPO_NAME:$SHA
