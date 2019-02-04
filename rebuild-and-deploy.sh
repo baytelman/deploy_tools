@@ -1,9 +1,6 @@
 #!/bin/bash
 # Builds, tags, uploads and deploy current directory
 
-export SHA=$(git log --pretty=format:'%h' -n 1)
-export BRANCH=$(git branch | grep \* | cut -d ' ' -f2)
-
 if [ "$DEPLOY_ENV" != "development" ] && [ "$DEPLOY_ENV" != "load" ] && [ "$DEPLOY_ENV" != "production" ]
 then
 	echo "Unknown environment type specified: '$DEPLOY_ENV'. Supported types: development/production.";

@@ -2,12 +2,6 @@
 # Builds, tags, and uploads container image
 set -e
 
-BLUE='\033[1;34m'
-PURPLE='\033[1;35m'
-NC='\033[0m' # No Color
-
-export SHA=$(git log --pretty=format:'%h' -n 1)
-export APP_NAME="$CLUSTER_NAME-$REPO_NAME"
 if [ $NAMED_AWS_CLI ]
 then
   export NAMED_PROFILE_AWS=" --profile "${NAMED_AWS_CLI}
