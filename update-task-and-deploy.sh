@@ -34,14 +34,14 @@ printf "\n${BLUE}Tagging deployed commit in git and image in the repo: ${PURPLE}
 docker push $AWS_ACCOUNT.dkr.ecr.us-east-1.amazonaws.com/$REPO_NAME:$DEPLOY_ENV
 
 # Track this unique deploy
-git tag --force $CLUSTER_NAME-$SHA >/dev/null
-git push origin $CLUSTER_NAME-$SHA > /dev/null
+git tag --force $TASK_NAME-$SHA >/dev/null
+git push origin $TASK_NAME-$SHA > /dev/null
 
 # Track the current deploy
-git tag --delete $CLUSTER_NAME > /dev/null
-git push --delete origin $CLUSTER_NAME > /dev/null
-git tag --force $CLUSTER_NAME >/dev/null
-git push origin $CLUSTER_NAME > /dev/null
+git tag --delete $TASK_NAME > /dev/null
+git push --delete origin $TASK_NAME > /dev/null
+git tag --force $TASK_NAME >/dev/null
+git push origin $TASK_NAME > /dev/null
 
 printf " \
 \n${BLUE}Service: \
