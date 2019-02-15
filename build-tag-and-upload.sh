@@ -9,6 +9,11 @@ else
   export NAMED_PROFILE_AWS=""
 fi
 
+if [ $DOCKER_HOME ]
+then
+  cd $DOCKER_HOME
+fi
+
 if [[ "$(docker images -q $REPO_NAME:$SHA 2> /dev/null)" == "" ]]
 then
   printf "\n${BLUE}Building image: ${PURPLE}$REPO_NAME:$SHA ${NC}\n"
