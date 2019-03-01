@@ -35,8 +35,18 @@ docker push $AWS_ACCOUNT.dkr.ecr.us-east-1.amazonaws.com/$REPO_NAME:$DEPLOY_ENV
 
 set +e
 # Track this unique deploy
-git tag --force $TASK_NAME-$SHA >/dev/null
-git push origin $TASK_NAME-$SHA > /dev/null
+
+export TAG=$TASK_NAME-$( date '+%F' )-$SHA
+git tag --force $TAG >/dev/null
+git push origin $TAG > /dev/null
+
+# Remove tags from 2-6 month ago
+
+for i in `seq 2 6`;
+do
+  git tag -l "$TASK_NAME*" | grep $(date -v -${i}m '+%Y-%m') | xargs -n 1 git push --delete origin
+  git tag -l "$TASK_NAME*" | grep $(date -v -${i}m '+%Y-%m') | xargs git tag -d
+done    
 
 # Track the current deploy
 git tag --delete $TASK_NAME > /dev/null
