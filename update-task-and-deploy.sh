@@ -14,9 +14,6 @@ fi
 
 printf "\n${BLUE}Creating task: ${PURPLE}$TASK_NAME:$SHA ${NC}\n"
 mkdir -p $DIR/tmp
-export SECRETS=$(cat ${SECRETS_HOME:-$PWD}/secrets.$DEPLOY_ENV.jsonpart)
-cat $DIR/task-def-tmpl.json | envsubst > $DIR/tmp/task-def-$TASK_NAME.json
-export SECRETS=""
 
 printf "\n${BLUE}Registering task: ${PURPLE}$TASK_NAME:$SHA ${NC}\n"
 CMD="aws ecs register-task-definition --cli-input-json file://$DIR/tmp/task-def-$TASK_NAME.json $NAMED_PROFILE_AWS"
