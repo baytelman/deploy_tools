@@ -17,8 +17,9 @@ fi
 if [[ "$(docker images -q $REPO_NAME:$SHA 2> /dev/null)" == "" ]]
 then
   printf "\n${BLUE}Building image: ${PURPLE}$REPO_NAME:$SHA ${NC}\n"
-  BUILD="docker build $DOCKER_ARGS -t $REPO_NAME ."
-  echo $BUILD
+  BUILD="docker build --quiet --compress $DOCKER_ARGS -t $REPO_NAME ."
+  BUILD_FOR_ECHO="docker build ... -t $REPO_NAME ."
+  echo $BUILD_FOR_ECHO
   eval $BUILD
   docker tag $REPO_NAME $REPO_NAME:$SHA
 else
