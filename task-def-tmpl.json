@@ -27,7 +27,6 @@
             },
             "essential": true,
             "environment": [
-                $SECRETS
                 { "name":   "NODE_ENV"          , "value":    "production"    },
                 { "name":   "APP_NAME"          , "value":    "$APP_NAME"     },
                 { "name":   "APP_SHA"           , "value":    "$SHA"          },
