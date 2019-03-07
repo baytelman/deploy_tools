@@ -62,5 +62,5 @@ printf " \
 
 if [ -n "$SLACK" ]
 then
-	curl -s -d "{\"text\": \"[FINISHED] $( id -un) deployed $CLUSTER_NAME ($BRANCH:#$SHA)\"}" -X POST $SLACK > /dev/null
+	curl -s -d "{\"text\": \"[FINISHED] $( id -un) deployed $TASK_NAME ($BRANCH:#$SHA)\"}" -X POST $SLACK > /dev/null
 fi

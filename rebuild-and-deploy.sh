@@ -9,7 +9,7 @@ fi
 
 if [ -n "$SLACK" ]
 then
-	curl -s -d "{\"text\": \"[STARTED] $( id -un) is deploying $CLUSTER_NAME ($BRANCH:#$SHA)...\"}" -X POST $SLACK > /dev/null
+	curl -s -d "{\"text\": \"[STARTED] $( id -un) is deploying $TASK_NAME ($BRANCH:#$SHA)...\"}" -X POST $SLACK > /dev/null
 fi
 
 export DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
@@ -37,6 +37,6 @@ then
 
 	if [ -n "$SLACK" ]
 	then
-		curl -s -d "{\"text\": \"[VALIDATED] $( id -un) deployed $CLUSTER_NAME ($BRANCH:#$SHA)\"} – LIVE" -X POST $SLACK > /dev/null
+		curl -s -d "{\"text\": \"[VALIDATED] $( id -un) deployed $TASK_NAME ($BRANCH:#$SHA)\"} – LIVE" -X POST $SLACK > /dev/null
 	fi
 fi
