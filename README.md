@@ -1,11 +1,5 @@
 # Requirements
 
-## envsubst
-```
-brew install gettext
-brew link --force gettext
-```
-
 ## aws
 ```
 pip install awscli
