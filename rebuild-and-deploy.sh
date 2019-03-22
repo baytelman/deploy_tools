@@ -24,7 +24,7 @@ then
 	echo "Checking for \"${SHA}\" in ${LIVE_URL} :"
 	while [ ${DEPLOYED} != true ]
 	do
-		if curl -s -i  "$LIVE_URL" | grep "$SHA"
+		if curl -f -s -i  "$LIVE_URL" | grep "$SHA"
 		then
 			DEPLOYED=true
 			echo "\"${SHA}\" found in ${LIVE_URL} !"
