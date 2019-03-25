@@ -16,8 +16,14 @@ fi
 
 if [[ "$(docker images -q $REPO_NAME:$SHA 2> /dev/null)" == "" ]]
 then
-  printf "\n${BLUE}Building image: ${PURPLE}$REPO_NAME:$SHA ${NC}\n"
-  source $DIR/build-docker.sh
+  if [[ "$(docker images -q $REPO_NAME-tmp:$SHA 2> /dev/null)" == "" ]]
+  then
+    printf "\n${BLUE}Image was built in background: ${PURPLE}$REPO_NAME:$SHA ${NC}\n"
+    docker tag $REPO_NAME-tmp:$SHA $REPO_NAME:$SHA
+  else
+    source $DIR/build-docker.sh
+    docker tag $REPO_NAME $REPO_NAME:$SHA
+  fi
 else
   printf "\n${BLUE}Image already built: ${PURPLE}$REPO_NAME:$SHA ${NC}\n"
 fi
