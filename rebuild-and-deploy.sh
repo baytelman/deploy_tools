@@ -14,10 +14,10 @@ fi
 
 if [ $DOCKER_PROC ]
 then
-	while [ -e /proc/$DOCKER_PROC ]
+	while kill -0 $DOCKER_PROC 2> /dev/null
 	do
 		echo "Background docker-build: $DOCKER_PROC is still running"
-		sleep .5
+		sleep 1
 	done
 	echo "Background docker-build: $DOCKER_PROC has finished"
 fi
