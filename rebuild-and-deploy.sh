@@ -12,6 +12,21 @@ then
 	curl -s -d "{\"text\": \"[STARTED] $( id -un) is deploying $TASK_NAME ($BRANCH:#$SHA)...\"}" -X POST $SLACK > /dev/null
 fi
 
+if [ $DOCKER_PROC ]
+then
+	if kill -0 $DOCKER_PROC 2> /dev/null
+	then
+		echo -n "Background docker-build: $DOCKER_PROC is still running"
+		while kill -0 $DOCKER_PROC 2> /dev/null
+		do
+			echo -n "."
+			sleep 1
+		done
+		echo "!"
+	fi
+	echo "Background docker-build: $DOCKER_PROC has finished"
+fi
+
 export DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $DIR/build-tag-and-upload.sh
 source $DIR/update-task-and-deploy.sh
@@ -24,7 +39,7 @@ then
 	echo "Checking for \"${SHA}\" in ${LIVE_URL} :"
 	while [ ${DEPLOYED} != true ]
 	do
-		if curl -f -s -i  "$LIVE_URL" | grep "$SHA"
+		if curl -s -i  "$LIVE_URL" | grep "$SHA"
 		then
 			DEPLOYED=true
 			echo "\"${SHA}\" found in ${LIVE_URL} !"
