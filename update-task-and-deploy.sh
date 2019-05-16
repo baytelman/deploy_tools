@@ -42,8 +42,8 @@ git push origin $TAG > /dev/null
 
 for i in `seq 2 6`;
 do
-  git tag -l "$TASK_NAME*" | grep $(date -v -${i}m '+%Y-%m') | xargs -n 1 git push --delete origin
-  git tag -l "$TASK_NAME*" | grep $(date -v -${i}m '+%Y-%m') | xargs git tag -d
+  git tag -l "$TASK_NAME*" | grep $(date -v -${i}m '+%Y-%m') | xargs -n 1 git push --delete origin &
+  git tag -l "$TASK_NAME*" | grep $(date -v -${i}m '+%Y-%m') | xargs git tag -d  &
 done    
 
 # Track the current deploy
