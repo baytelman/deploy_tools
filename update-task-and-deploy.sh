@@ -12,6 +12,16 @@ else
   export NAMED_PROFILE_AWS=""
 fi
 
+# Find out if this is Mac/Linux
+unameOut="$(uname -s)"
+case "${unameOut}" in
+    Linux*)     machine=Linux;;
+    Darwin*)    machine=Mac;;
+    CYGWIN*)    machine=Cygwin;;
+    MINGW*)     machine=MinGw;;
+    *)          machine="UNKNOWN:${unameOut}"
+esac
+
 printf "\n${BLUE}Creating task: ${PURPLE}$TASK_NAME:$SHA ${NC}\n"
 mkdir -p $DIR/tmp
 cat $DIR/task-def-tmpl.json | envsubst > $DIR/tmp/task-def-$TASK_NAME.json
@@ -42,8 +52,14 @@ git push origin $TAG > /dev/null
 
 for i in `seq 2 6`;
 do
-  git tag -l "$TASK_NAME*" | grep $(date -v -${i}m '+%Y-%m') | xargs -n 1 git push --delete origin &
-  git tag -l "$TASK_NAME*" | grep $(date -v -${i}m '+%Y-%m') | xargs git tag -d  &
+  if unameOut == 'Linux'
+  then
+    git tag -l "$TASK_NAME*" | grep $(date -v -${i}m '+%Y-%m') | xargs -n 1 git push --delete origin &
+    git tag -l "$TASK_NAME*" | grep $(date -v -${i}m '+%Y-%m') | xargs git tag -d  &
+  else
+    git tag -l "$TASK_NAME*" | grep $(date --date='- ${i} months' '+%Y-%m') | xargs -n 1 git push --delete origin &
+    git tag -l "$TASK_NAME*" | grep $(date --date='- ${i} months' '+%Y-%m') | xargs git tag -d  &
+  fi
 done    
 
 # Track the current deploy
