@@ -49,16 +49,15 @@ git tag --force $TAG >/dev/null
 git push origin $TAG > /dev/null
 
 # Remove tags from 2-6 month ago
-
 for i in `seq 2 6`;
 do
-  if unameOut == 'Linux'
+  if [ $unameOut != 'Linux' ]
   then
     git tag -l "$TASK_NAME*" | grep $(date -v -${i}m '+%Y-%m') | xargs -n 1 git push --delete origin &
     git tag -l "$TASK_NAME*" | grep $(date -v -${i}m '+%Y-%m') | xargs git tag -d  &
   else
-    git tag -l "$TASK_NAME*" | grep $(date --date='- ${i} months' '+%Y-%m') | xargs -n 1 git push --delete origin &
-    git tag -l "$TASK_NAME*" | grep $(date --date='- ${i} months' '+%Y-%m') | xargs git tag -d  &
+    git tag -l "$TASK_NAME*" | grep $(date --date="- ${i} months" '+%Y-%m') | xargs -n 1 git push --delete origin &
+    git tag -l "$TASK_NAME*" | grep $(date --date="- ${i} months" '+%Y-%m') | xargs git tag -d  &
   fi
 done    
 
